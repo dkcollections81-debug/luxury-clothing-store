@@ -105,13 +105,14 @@ document.querySelectorAll('.order-btn, .whatsapp-btn, [href*="wa.me"]').forEach(
         const price = this.closest('.product-card')?.querySelector('.price')?.textContent || 'N/A';
         
         // Track the click
-        trackEvent('whatsapp_click', {
+        trackEvent('whatsapp_order', {
             'product': productName,
             'price': price,
             'timestamp': new Date().toISOString()
         });
         
         console.log(`📲 WhatsApp Order: ${productName} (${price})`);
+        console.log('Redirecting to WhatsApp...');
     });
 });
 
@@ -125,90 +126,6 @@ function trackEvent(eventName, eventData) {
         gtag('event', eventName, eventData);
     }
 }
-
-// Add to cart simulation (for future e-commerce integration)
-const cart = {
-    items: [],
-    
-    addItem: function(productName, price, quantity = 1) {
-        this.items.push({
-            name: productName,
-            price: price,
-            quantity: quantity,
-            timestamp: new Date()
-        });
-        console.log(`✓ Added to cart: ${productName} x${quantity}`);
-        this.showCartNotification(productName);
-    },
-    
-    showCartNotification: function(productName) {
-        const notification = document.createElement('div');
-        notification.style.cssText = `
-            position: fixed;
-            top: 80px;
-            right: 20px;
-            background: linear-gradient(135deg, #25d366, #20ba5a);
-            color: white;
-            padding: 16px 24px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
-            z-index: 9999;
-            animation: slideIn 0.3s ease;
-            font-weight: 600;
-        `;
-        notification.innerHTML = `✓ ${productName} - Share on WhatsApp to order`;
-        document.body.appendChild(notification);
-        
-        setTimeout(() => {
-            notification.remove();
-        }, 3000);
-    }
-};
-
-// Mobile menu toggle (for future mobile optimization)
-function toggleMobileMenu() {
-    const navLinks = document.querySelector('.nav-links');
-    if (navLinks.style.display === 'flex') {
-        navLinks.style.display = 'none';
-    } else {
-        navLinks.style.display = 'flex';
-    }
-}
-
-// Lazy loading for images
-if ('IntersectionObserver' in window) {
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                if (img.dataset.src) {
-                    img.src = img.dataset.src;
-                    img.removeAttribute('data-src');
-                }
-                observer.unobserve(img);
-            }
-        });
-    });
-    
-    document.querySelectorAll('img[data-src]').forEach(img => {
-        imageObserver.observe(img);
-    });
-}
-
-// Keyboard shortcuts
-document.addEventListener('keydown', function(e) {
-    // Press 'W' to open WhatsApp
-    if (e.key.toLowerCase() === 'w' && e.ctrlKey) {
-        e.preventDefault();
-        window.open('https://wa.me/919447676989', '_blank');
-    }
-    
-    // Press 'Home' to scroll to top
-    if (e.key === 'Home') {
-        e.preventDefault();
-        document.querySelector('#home').scrollIntoView({ behavior: 'smooth' });
-    }
-});
 
 // Price formatter
 function formatPrice(price) {
@@ -243,6 +160,7 @@ function searchProducts(query) {
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🎉 DK Collections - Premium Luxury Clothing Store');
     console.log('📱 WhatsApp: +91 9447676989');
+    console.log('🛍️ Buy directly through WhatsApp - No cart, no checkout!');
     console.log('🌐 Ready to serve you!');
     
     // Add delivery date to order messages
@@ -299,12 +217,12 @@ document.head.appendChild(style);
 
 // Export functions for use in console
 window.dkCollections = {
-    addToCart: (productName, price, quantity) => cart.addItem(productName, price, quantity),
     searchProducts: searchProducts,
     getDeliveryDate: getDeliveryDate,
     formatPrice: formatPrice,
     trackEvent: trackEvent
 };
 
-console.log('💡 Tip: Use window.dkCollections to access functions');
-console.log('💡 Example: window.dkCollections.addToCart("Product Name", 4999, 1)');
+console.log('💡 Quick Actions:');
+console.log('💡 - Click "Order on WhatsApp" on any product to start ordering');
+console.log('💡 - Use window.dkCollections.searchProducts("keyword") to find products');
